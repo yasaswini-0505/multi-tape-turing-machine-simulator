@@ -67,19 +67,6 @@ The simulator includes the following problem modules:
 ├── script.js     # Core simulation logic
 ```
 
----
-
-## ▶️ How to Run Locally
-
-1. Download or clone this repository:
-
-   ```
-   git clone https://github.com/your-username/multi-tape-turing-machine-simulator.git
-   ```
-2. Open `index.html` in your browser.
-
----
-
 ## 📊 Key Learning Outcomes
 
 * Understanding Turing Machine computation
