@@ -17,6 +17,9 @@ class Tape {
     moveLeft() {
         if (this.headPosition > 0) {
             this.headPosition--;
+        } else {
+            this.cells.unshift('_');
+            this.headPosition = 0;
         }
     }
 
@@ -174,81 +177,47 @@ const PROBLEMS = {
         numTapes: 2,
         build: function() {
             const tm = new MultitapeTuringMachine(2);
-            
-            // States: q0=start, q1=copy to tape2, q2=move tape1 to end, q3=compare
-            // Transitions for palindrome checker
-            tm.addTransition('q0', ['a', '_'], 'q1', ['a', 'a'], ['R', 'R']);
-            tm.addTransition('q0', ['b', '_'], 'q1', ['b', 'b'], ['R', 'R']);
-            tm.addTransition('q0', ['c', '_'], 'q1', ['c', 'c'], ['R', 'R']);
-            tm.addTransition('q0', ['_', '_'], 'q2', ['_', '_'], ['L', 'L']);
-            
-            tm.addTransition('q1', ['a', '_'], 'q1', ['a', 'a'], ['R', 'R']);
-            tm.addTransition('q1', ['b', '_'], 'q1', ['b', 'b'], ['R', 'R']);
-            tm.addTransition('q1', ['c', '_'], 'q1', ['c', 'c'], ['R', 'R']);
-            tm.addTransition('q1', ['_', '_'], 'q2', ['_', '_'], ['L', 'S']);
-            
-            tm.addTransition('q2', ['a', 'a'], 'q3', ['a', 'a'], ['L', 'L']);
-            tm.addTransition('q2', ['b', 'b'], 'q3', ['b', 'b'], ['L', 'L']);
-            tm.addTransition('q2', ['c', 'c'], 'q3', ['c', 'c'], ['L', 'L']);
-            tm.addTransition('q2', ['_', '_'], 'qaccept', ['_', '_'], ['S', 'S']);
-            
-            tm.addTransition('q3', ['a', 'a'], 'q2', ['a', 'a'], ['L', 'L']);
-            tm.addTransition('q3', ['b', 'b'], 'q2', ['b', 'b'], ['L', 'L']);
-            tm.addTransition('q3', ['c', 'c'], 'q2', ['c', 'c'], ['L', 'L']);
-            
+            const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+            // Copy input from Tape 1 to Tape 2
+            for (const char of alphabet) {
+                tm.addTransition('q0', [char, '_'], 'q1', [char, char], ['R', 'R']);
+                tm.addTransition('q1', [char, '_'], 'q1', [char, char], ['R', 'R']);
+            }
+
+            // After copying, move both heads left to compare characters from the end
+            tm.addTransition('q0', ['_', '_'], 'q1', ['_', '_'], ['L', 'L']);
+            tm.addTransition('q1', ['_', '_'], 'qaccept', ['_', '_'], ['S', 'S']);
+
+            // Compare letters from right to left
+            for (const char of alphabet) {
+                tm.addTransition('q1', [char, char], 'q1', [char, char], ['L', 'L']);
+            }
+
             return tm;
         }
     },
     
-    'equal-0s-1s': {
-        name: 'Equal 0s & 1s Counter',
-        description: 'Checks if the binary string has equal number of 0s and 1s.\n\nAlgorithm: Marks 0s and 1s alternately on Tape 2.\n\nExample: "01" → ✓ Accept, "001" → ✗ Reject',
-        hints: 'For Equal 0s & 1s: Enter binary strings like "01", "0011", "001011"',
-        numTapes: 2,
-        build: function() {
-            const tm = new MultitapeTuringMachine(2);
-            
-            // Mark 0s and 1s alternately
-            tm.addTransition('q0', ['0', '_'], 'q1', ['X', 'X'], ['R', 'R']);
-            tm.addTransition('q0', ['1', '_'], 'q2', ['Y', 'Y'], ['R', 'R']);
-            tm.addTransition('q0', ['_', '_'], 'qaccept', ['_', '_'], ['S', 'S']);
-            
-            tm.addTransition('q1', ['0', '_'], 'q2', ['X', 'Y'], ['R', 'R']);
-            tm.addTransition('q1', ['1', '_'], 'q1', ['Y', '_'], ['R', 'R']);
-            tm.addTransition('q1', ['_', '_'], 'q2', ['_', '_'], ['R', 'R']);
-            
-            tm.addTransition('q2', ['0', '_'], 'q2', ['X', '_'], ['R', 'R']);
-            tm.addTransition('q2', ['1', '_'], 'q1', ['Y', 'X'], ['R', 'R']);
-            tm.addTransition('q2', ['_', '_'], 'q1', ['_', '_'], ['R', 'R']);
-            
-            return tm;
-        }
-    },
+
     
     'binary-increment': {
         name: 'Binary Increment',
-        description: 'Increments the binary number by 1.\n\nAlgorithm: Finds rightmost 0, changes it to 1, changes all 1s to its right to 0s.\n\nExample: "011" → "100", "111" → "1000"',
+        description: 'Increments the binary number by 1.\n\nAlgorithm: Finds the rightmost bit, flips 1s to 0s until a 0 is found, then changes it to 1. If the number is all 1s, adds a new leading 1.\n\nExample: "011" → "100", "111" → "1000"',
         hints: 'For Binary Increment: Enter binary numbers like "1", "10", "11", "101"',
         numTapes: 2,
         build: function() {
             const tm = new MultitapeTuringMachine(2);
-            
-            // q0: scan right, q1: found position, q2: change 0→1, q3: change 1s→0s
-            tm.addTransition('q0', ['0', '_'], 'q0', ['0', '0'], ['R', 'R']);
-            tm.addTransition('q0', ['1', '_'], 'q0', ['1', '1'], ['R', 'R']);
+
+            // q0: move right until blank on tape1
+            tm.addTransition('q0', ['0', '_'], 'q0', ['0', '_'], ['R', 'S']);
+            tm.addTransition('q0', ['1', '_'], 'q0', ['1', '_'], ['R', 'S']);
             tm.addTransition('q0', ['_', '_'], 'q1', ['_', '_'], ['L', 'S']);
-            
-            tm.addTransition('q1', ['0', '0'], 'q2', ['1', '1'], ['L', 'L']);
-            tm.addTransition('q1', ['1', '1'], 'q3', ['0', '0'], ['L', 'L']);
-            
-            tm.addTransition('q2', ['0', '0'], 'q2', ['0', '0'], ['L', 'L']);
-            tm.addTransition('q2', ['1', '1'], 'q2', ['1', '1'], ['L', 'L']);
-            tm.addTransition('q2', ['_', '_'], 'qaccept', ['_', '_'], ['S', 'S']);
-            
-            tm.addTransition('q3', ['1', '1'], 'q3', ['1', '0'], ['L', 'L']);
-            tm.addTransition('q3', ['0', '0'], 'q3', ['0', '0'], ['L', 'L']);
-            tm.addTransition('q3', ['_', '_'], 'qaccept', ['1', '1'], ['S', 'S']);
-            
+
+            // q1: perform increment by flipping bits from right to left
+            tm.addTransition('q1', ['1', '_'], 'q1', ['0', '_'], ['L', 'S']);
+            tm.addTransition('q1', ['0', '_'], 'qaccept', ['1', '_'], ['S', 'S']);
+            tm.addTransition('q1', ['_', '_'], 'qaccept', ['1', '_'], ['S', 'S']);
+
             return tm;
         }
     },
@@ -269,6 +238,16 @@ const PROBLEMS = {
             
             tm.addTransition('q0', ['_', '_'], 'qaccept', ['_', '_'], ['S', 'S']);
             
+            return tm;
+        }
+    },
+    custom: {
+        name: 'Custom Rules',
+        description: 'Use this mode to create your own Turing Machine rules by editing the custom build function in script.js.\n\nThis placeholder lets the custom button work and shows the transition editor for manual rule creation.',
+        hints: 'Define custom transitions in the script.js under PROBLEMS.custom.build()',
+        numTapes: 2,
+        build: function() {
+            const tm = new MultitapeTuringMachine(2);
             return tm;
         }
     }
