@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi-Tape Turing Machine Simulator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <h1>🎯 Multi-Tape Turing Machine Simulator</h1>
+        <p class="subtitle">
+          Advanced Theory of Computation - Interactive Learning & Problem
+          Solving
+        </p>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Left Panel -->
+        <div class="left-panel">
+          <!-- Problem Selection -->
+          <section class="section problem-selection">
+            <h2>🎓 Problem Module</h2>
+            <div class="button-group">
+              <button class="problem-btn active" data-problem="palindrome">
+                🔄 Palindrome Checker
+              </button>
+              <button class="problem-btn" data-problem="equal-0s-1s">
+                ⚖️ Equal 0s & 1s
+              </button>
+              <button class="problem-btn" data-problem="binary-increment">
+                ➕ Binary Increment
+              </button>
+              <button class="problem-btn" data-problem="string-copy">
+                📋 String Copy
+              </button>
+              <button class="problem-btn" data-problem="custom">
+                ⚙️ Custom Rules
+              </button>
+            </div>
+          </section>
+
+          <!-- Input Section -->
+          <section class="section input-section">
+            <h2>📥 Input</h2>
+            <div class="input-group">
+              <input
+                type="text"
+                id="inputString"
+                class="input-field"
+                placeholder="Enter input string (e.g., aba)"
+                value="aba"
+              />
+              <span class="help-icon" title="Input will be placed on Tape 1"
+                >ℹ️</span
+              >
+            </div>
+            <div class="input-hints" id="inputHints">
+              <p>
+                <strong>For Palindrome:</strong> Enter strings like 'aba',
+                'racecar', 'abc'
+              </p>
+            </div>
+          </section>
+
+          <!-- Problem Description -->
+          <section class="section description-section">
+            <h2>📖 Problem Description</h2>
+            <div id="problemDescription" class="description-content">
+              <h4>Palindrome Checker</h4>
+              <p>
+                Checks if the input string is a palindrome (reads the same
+                forwards and backwards).
+              </p>
+              <p>
+                <strong>Algorithm:</strong> Uses 2 tapes to compare characters
+                from start and end.
+              </p>
+              <p>
+                <strong>Example:</strong> "aba" → ✓ Accept, "abc" → ✗ Reject
+              </p>
+            </div>
+          </section>
+
+          <!-- Execution Controls -->
+          <section class="section controls-section">
+            <h2>⚙️ Execution Controls</h2>
+            <div class="button-group">
+              <button id="startBtn" class="control-btn start-btn">
+                ▶️ Start
+              </button>
+              <button id="stepBtn" class="control-btn step-btn" disabled>
+                ⏭️ Step
+              </button>
+              <button id="runBtn" class="control-btn run-btn" disabled>
+                ⏯️ Run
+              </button>
+              <button id="pauseBtn" class="control-btn pause-btn" disabled>
+                ⏸️ Pause
+              </button>
+              <button id="resetBtn" class="control-btn reset-btn">
+                🔄 Reset
+              </button>
+            </div>
+          </section>
+
+          <!-- Execution Info -->
+          <section class="section info-section">
+            <h2>📊 Status</h2>
+            <div class="info-box">
+              <p>
+                <strong>Current State:</strong>
+                <span id="currentState" class="state-label">q0</span>
+              </p>
+              <p>
+                <strong>Step Count:</strong> <span id="stepCount">0</span> /
+                <span id="maxSteps">1000</span>
+              </p>
+              <p>
+                <strong>Status:</strong>
+                <span id="status" class="status-label">Ready</span>
+              </p>
+              <p>
+                <strong>Result:</strong>
+                <span id="result" class="result-label">-</span>
+              </p>
+            </div>
+          </section>
+
+          <!-- Transition Rules Editor -->
+          <section class="section rules-section">
+            <h2>⚡ Current Transition Rule</h2>
+            <div id="currentRule" class="rule-display">
+              No rule executed yet
+            </div>
+          </section>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+          <!-- Educational Info -->
+          <section class="section education-section">
+            <h2>🧠 About Multi-Tape TM</h2>
+            <div class="education-content">
+              <div class="info-card">
+                <h4>What is a Multi-Tape Turing Machine?</h4>
+                <p>
+                  A Turing Machine with multiple tapes, each with an independent
+                  read/write head. More powerful for computation than
+                  single-tape variants.
+                </p>
+              </div>
+              <div class="info-card">
+                <h4>Key Advantages</h4>
+                <ul>
+                  <li>✓ Auxiliary memory for complex algorithms</li>
+                  <li>✓ Parallel processing on different tapes</li>
+                  <li>✓ Optimal for data transformation</li>
+                  <li>✓ Simpler logic for certain problems</li>
+                </ul>
+              </div>
+              <div class="info-card">
+                <h4>Real-World Applications</h4>
+                <ul>
+                  <li>🔸 Compiler design & parsing</li>
+                  <li>🔸 Pattern matching algorithms</li>
+                  <li>🔸 String manipulation</li>
+                  <li>🔸 Data validation & transformation</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tape Visualization -->
+          <section class="section tape-section">
+            <h2>📼 Tape Visualization</h2>
+            <div id="tapeContainer" class="tape-container">
+              <!-- Tapes will be rendered here -->
+            </div>
+          </section>
+
+          <!-- Transition Table -->
+          <section class="section table-section">
+            <h2>📋 Transition Rules</h2>
+            <div id="transitionTable" class="transition-table">
+              <!-- Table will be rendered here -->
+            </div>
+          </section>
+
+          <!-- Execution Log -->
+          <section class="section log-section">
+            <h2>📝 Execution Log</h2>
+            <div id="executionLog" class="execution-log">
+              <p class="log-entry">Log will appear here during execution...</p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
