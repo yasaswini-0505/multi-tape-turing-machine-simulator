@@ -31,13 +31,10 @@ The simulator includes the following problem modules:
 1. 🔄 **Palindrome Checker**
    Checks whether a string reads the same forwards and backwards.
 
-2. ⚖️ **Equal 0s & 1s**
-   Verifies if a binary string has an equal number of 0s and 1s.
-
-3. ➕ **Binary Increment**
+2. ➕ **Binary Increment**
    Increments a binary number by 1.
 
-4. 📋 **String Copy**
+3. 📋 **String Copy**
    Copies input from one tape to another.
 
 ---
