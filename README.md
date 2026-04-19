@@ -100,11 +100,7 @@ The simulator includes the following problem modules:
 
 ## 👩‍💻 Author
 
-* Name: *Your Name*
+* Name: Yasaswini Chirravuri
 * Course: Theory of Computation
 
 ---
-
-## 📄 License
-
-This project is for academic purposes only.
