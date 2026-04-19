@@ -80,18 +80,6 @@ The simulator includes the following problem modules:
 
 ---
 
-## 🌐 Live Demo
-
-👉 [View Live Simulation](https://your-project.vercel.app)
-
----
-
-## 🎥 Demo Video
-
-👉 [Watch Demo Video](https://your-video-link)
-
----
-
 ## 📊 Key Learning Outcomes
 
 * Understanding Turing Machine computation
